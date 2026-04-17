@@ -1,22 +1,13 @@
+#include "tbook.h"
 #include <iostream>
 #include <string>
 #include <vector>
 #include <limits>
-#include <climits>
 #include <algorithm>
 #include <fstream>
 #include <sstream>
 
-int countContact = 0;
-
-struct Contact{
-	std::string name;
-	std::string number;
-};
-
-std::vector<Contact> contacts;
-
-void add(){
+void add(std::vector<Contact>& contacts){
 	std::string nameInput,numberInput;
 	std::cout << "Введите имя(0.Выход): ";
 	std::cin >> nameInput;
@@ -29,7 +20,7 @@ void add(){
 	contacts.push_back({nameInput,numberInput});
 	std::cout << "Контакт добавлен.\n\n";
 };
-void all(){
+void all(const std::vector<Contact>& contacts){
 	if(contacts.empty()){
 		std::cout << "Список контактов пуст.";
 		return;
@@ -41,7 +32,7 @@ void all(){
 	}
 	std::cout << "\n";
 }
-void del(){
+void del(std::vector<Contact>& contacts){
 	if(contacts.empty()){
 		std::cout << "Список контактов пуст.";
 		return;
@@ -55,14 +46,12 @@ void del(){
 	if(std::cin.fail()){
 		std::cin.clear();
 		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-		std::cout << "Ошибка! Введите число.";
-		del();
+		std::cout << "Ошибка! Введите номер контакта.";
 	}
 	if(temp >= 0 && static_cast<unsigned long long>(temp) <= SIZE_MAX){
 		iDel = static_cast<size_t>(temp);
 	} else {
-		std::cout << "Ошибка! Введите положительное число.";
-		del();
+		std::cout << "Ошибка! Введите номер контакта.";
 	}
 	if(iDel == 0){
 		return;
@@ -75,14 +64,18 @@ void del(){
 	}
 }
 
-void sortAZ(){
+void sortAZ(std::vector<Contact>& contacts){
+	if(contacts.empty()){
+		std::cout << "Список контактов пуст.";
+		return;
+	}
 	std::sort(contacts.begin(),contacts.end(),
 	[] (const Contact& a, const Contact& b){
 		return a.name < b.name;
 	});
 }
 
-void importTBook(){
+void importTBook(std::vector<Contact>& contacts){
 	std::ifstream in("tbook.txt");
 	if(in.is_open()){
 		std::string line;
@@ -99,7 +92,7 @@ void importTBook(){
 	in.close();
 }
 
-void exportTBook(){
+void exportTBook(const std::vector<Contact>& contacts){
 	std::ofstream out("tbook.txt");
 	if(out.is_open()){
 		for(size_t i = 0;i<contacts.size();i++){
@@ -107,47 +100,4 @@ void exportTBook(){
 		}
 	}
 	out.close();
-}
-
-int main(){
-	char action=' ';
-	while(action!='0'){
-		std::cout << "1. Создать контакт\n"
-				  << "2. Вывести все контакты\n"
-				  << "3. Удалить контакт\n"
-				  << "4. Отсортировать в алфавитном порядке\n"
-				  << "5. Импортировать контакты\n"
-				  << "6. Экспортировать контакты\n"
-				  << "0. Выход\n\n"
-				  << "Выберите действие: ";
-		std::cin >> action;
-		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-		switch(action){
-			case '1':
-				add();
-				break;
-			case '2':
-				all();
-				break;
-			case '3':
-				del();
-				break;
-			case '4':
-				sortAZ();
-				break;
-			case '5':
-				importTBook();
-				break;
-			case '6':
-				exportTBook();
-				break;
-			case '0':
-				std::cout << "Выход...\n";
-				return 0;
-			default:
-				std::cout << "Некорректное действие\n";
-				break;
-		}
-	}
-
 }
