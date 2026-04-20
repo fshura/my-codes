@@ -1,7 +1,4 @@
 #include "tbook.h"
-#include <string>
-#include <vector>
-#include <limits>
 
 int main(){
 	std::vector<Contact> contacts;

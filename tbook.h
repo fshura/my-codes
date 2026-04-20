@@ -4,6 +4,10 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <limits>
+#include <algorithm>
+#include <fstream>
+#include <sstream>
 
 struct Contact{
 	std::string name;

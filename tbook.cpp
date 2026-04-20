@@ -1,11 +1,4 @@
 #include "tbook.h"
-#include <iostream>
-#include <string>
-#include <vector>
-#include <limits>
-#include <algorithm>
-#include <fstream>
-#include <sstream>
 
 void add(std::vector<Contact>& contacts){
 	std::string nameInput,numberInput;
